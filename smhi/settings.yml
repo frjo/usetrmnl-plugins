@@ -1,0 +1,24 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/{{
+  longitude }}/lat/{{ latitude }}/data.json
+polling_headers: ''
+custom_fields:
+- keyname: city
+  field_type: string
+  placeholder: Stockholm
+  name: City
+- keyname: longitude
+  field_type: string
+  placeholder: '18.5'
+  name: Longitude
+- keyname: latitude
+  field_type: string
+  placeholder: '59.4'
+  name: Latitude
+name: SMHI
+refresh_interval: 720

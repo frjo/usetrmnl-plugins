@@ -1,0 +1,32 @@
+<div class="layout">
+  <div class="columns">
+    {% for hours in timeSeries limit: 72 %}
+      {% assign hour = hours.validTime | date: "%H" %}
+      {% if hour == "09" or hour == "15" or hour == "21" %}
+        <div class="column">
+          <div class="label label--small label--inverted">{{ hours.validTime | date: "%a %H:%S" }}</div>
+          {% for param in hours.parameters %}
+            {% if param.name == "t" %}
+              <div class="value value--xxsmall value--tnums">{{ param.values }}°C</div>
+            {% endif %}
+            {% if param.name == "ws" %}
+              <div class="value value--xxsmall value--tnums">{{ param.values }}m/s</div>
+            {% endif %}
+            {% if param.name == "gust" %}
+              <div class="value value--xxsmall value--tnums">{{ param.values }}m/s</div>
+            {% endif %}
+            {% if param.name == "pmean" %}
+              <div class="value value--xxsmall value--tnums">{{ param.values }}mm</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+
+<div class="title_bar">
+  <span class="title">SMHI väder</span>
+  <span class="instance">{{ trmnl.plugin_settings.custom_fields_values.city }}</span>
+</div>
