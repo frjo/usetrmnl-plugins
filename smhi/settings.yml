@@ -20,5 +20,25 @@ custom_fields:
   field_type: string
   placeholder: '59.4'
   name: Latitude
+- keyname: items_narrow
+  field_type: select
+  name: Items to show on half with
+  options:
+  - 1
+  - 2
+  - 3
+  - 4
+- keyname: items_wide
+  field_type: select
+  name: Items to show on full with
+  options:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
 name: SMHI
 refresh_interval: 720

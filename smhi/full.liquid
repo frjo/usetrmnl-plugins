@@ -1,29 +1,37 @@
 <div class="layout">
   <div class="columns">
-    {% for hours in timeSeries limit: 72 %}
+    {% assign i = 1 %}
+    {% assign show = trmnl.plugin_settings.custom_fields_values.items_wide | plus: 0 %}
+    {% for hours in timeSeries %}
       {% assign hour = hours.validTime | date: "%H" %}
       {% if hour == "09" or hour == "15" or hour == "21" %}
+        {% for param in hours.parameters %}
+          {% if param.name == "t" %}
+            {% assign temp = param.values %}
+          {% elsif param.name == "ws" %}
+            {% assign wind = param.values %}
+          {% elsif param.name == "gust" %}
+            {% assign gust = param.values %}
+          {% elsif param.name == "pmean" %}
+            {% assign precip = param.values %}
+          {% elsif param.name == "r" %}
+            {% assign humid = param.values %}
+          {% endif %}
+        {% endfor %}
         <div class="column">
           <div class="label label--small label--inverted">{{ hours.validTime | date: "%a %H:%S" }}</div>
-          {% for param in hours.parameters %}
-            {% if param.name == "t" %}
-              <div class="value value--xxsmall value--tnums">{{ param.values }}°C</div>
-            {% elsif param.name == "ws" %}
-              <div class="value value--xxsmall value--tnums">{{ param.values }}m/s</div>
-            {% elsif param.name == "gust" %}
-              <div class="value value--xxsmall value--tnums">{{ param.values }}m/s</div>
-            {% elsif param.name == "pmean" %}
-              <div class="value value--xxsmall value--tnums">{{ param.values }}mm</div>
-            {% elsif param.name == "r" %}
-              <div class="value value--xxsmall value--tnums">{{ param.values }}%</div>
-            {% endif %}
-          {% endfor %}
+          <div class="value value--xxsmall value--tnums">{{ temp }}°C</div>
+          <div class="value value--xxsmall value--tnums">{{ wind }}m/s</div>
+          <div class="value value--xxsmall value--tnums">{{ gust }}m/s</div>
+          <div class="value value--xxsmall value--tnums">{{ precip }}mm</div>
+          <div class="value value--xxsmall value--tnums">{{ humid }}%</div>
         </div>
+        {% if i == show %}{% break %}{% endif %}
+        {% assign i = i | plus: 1 %}
       {% endif %}
     {% endfor %}
   </div>
 </div>
-
 
 <div class="title_bar">
   <span class="title">SMHI väder</span>
