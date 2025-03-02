@@ -2,29 +2,33 @@
   <div class="columns">
     {% assign i = 1 %}
     {% assign show = trmnl.plugin_settings.custom_fields_values.items_wide | plus: 0 %}
+    {% assign type = "Snö, Snöbland, Regn, Dugg, Unsk regn, Unsk dugg" | split: ", " %}
     {% for hours in timeSeries %}
       {% assign hour = hours.validTime | date: "%H" %}
       {% if hour == "09" or hour == "15" or hour == "21" %}
         {% for param in hours.parameters %}
+          {% assign value = param.values[0] | plus: 0 %}
           {% if param.name == "t" %}
-            {% assign temp = param.values %}
+            {% assign temp = value | round %}
           {% elsif param.name == "ws" %}
-            {% assign wind = param.values %}
+            {% assign wind = value | round %}
           {% elsif param.name == "gust" %}
-            {% assign gust = param.values %}
+            {% assign gust = value | round %}
           {% elsif param.name == "pmean" %}
-            {% assign precip = param.values %}
+            {% assign precip = value | round %}
           {% elsif param.name == "r" %}
-            {% assign humid = param.values %}
+            {% assign humid = value %}
+          {% elsif param.name == "pcat" %}
+            {% assign pcat = type[value] %}
           {% endif %}
         {% endfor %}
         <div class="column">
           <div class="label label--small label--inverted">{{ hours.validTime | date: "%a %H:%S" }}</div>
           <div class="value value--xxsmall value--tnums">{{ temp }}°C</div>
-          <div class="value value--xxsmall value--tnums">{{ wind }}m/s</div>
-          <div class="value value--xxsmall value--tnums">{{ gust }}m/s</div>
           <div class="value value--xxsmall value--tnums">{{ precip }}mm</div>
+          <div class="value value--xxsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
           <div class="value value--xxsmall value--tnums">{{ humid }}%</div>
+          <div class="value value--xxsmall value--tnums">{{ pcat }}</div>
         </div>
         {% if i == show %}{% break %}{% endif %}
         {% assign i = i | plus: 1 %}
