@@ -22,7 +22,7 @@ custom_fields:
   name: Latitude
 - keyname: items_narrow
   field_type: select
-  name: Items to show on half with
+  name: Items to show on half width
   options:
   - 1
   - 2
@@ -30,7 +30,7 @@ custom_fields:
   - 4
 - keyname: items_wide
   field_type: select
-  name: Items to show on full with
+  name: Items to show on full width
   options:
   - 1
   - 2

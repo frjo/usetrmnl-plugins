@@ -15,7 +15,7 @@
           {% elsif param.name == "gust" %}
             {% assign gust = value | round %}
           {% elsif param.name == "pmean" %}
-            {% assign precip = value | round %}
+            {% assign precip = value %}
           {% elsif param.name == "r" %}
             {% assign humid = value %}
           {% elsif param.name == "pcat" %}
