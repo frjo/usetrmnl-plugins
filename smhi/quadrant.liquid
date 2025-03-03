@@ -1,11 +1,14 @@
 <div class="layout">
   <div class="columns">
-    {% assign i = 1 %}
-    {% assign show = trmnl.plugin_settings.custom_fields_values.items_narrow | plus: 0 %}
+    {% assign hours = "13" %}
     {% assign type = "–, Snö, Snöbland, Regn, Dugg, Undk regn, Undk dugg" | split: ", " %}
+    {% assign show = 3 %}
+    {% assign i = 0 %}
     {% for series in timeSeries %}
-      {% assign hour = series.validTime | date: "%H" %}
-      {% if hour == trmnl.plugin_settings.custom_fields_values.hours_narrow %}
+      {% assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset %}
+      {% assign hour = validtimetz | date: "%H" %}
+      {% if hours contains hour %}
+        {% assign i = i | plus: 1 %}
         {% for param in series.parameters %}
           {% assign value = param.values[0] | plus: 0 %}
           {% if param.name == "t" %}
@@ -23,7 +26,7 @@
           {% endif %}
         {% endfor %}
         <div class="column">
-          <div class="label label--small label--inverted">{{ series.validTime | date: "%a %H:%S" }}</div>
+          <div class="label label--small label--inverted">{{ validtimetz | date: "%a %H:%S" }}</div>
           <div class="value value--xxsmall value--tnums">{{ temp }}°C</div>
           <div class="value value--xxsmall value--tnums">{{ precip }}mm</div>
           <div class="value value--xxsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
@@ -31,7 +34,6 @@
           <div class="value value--xxsmall value--tnums">{{ pcat }}</div>
         </div>
         {% if i == show %}{% break %}{% endif %}
-        {% assign i = i | plus: 1 %}
       {% endif %}
     {% endfor %}
   </div>
