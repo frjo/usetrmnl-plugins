@@ -21,4 +21,4 @@ custom_fields:
   placeholder: '59.4'
   name: Latitude
 name: SMHI
-refresh_interval: 360
+refresh_interval: 60
