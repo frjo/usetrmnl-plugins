@@ -1,6 +1,7 @@
 {%- assign hours = "13" | split: ", " -%}
 {%- assign show = 4 -%}
 {%- assign type = ", Snö, Snöbland, Regn, Dugg, Undk regn, Undk dugg" | split: ", " -%}
+{%- assign days = ", Mån, Tis, Ons, Tors, Fre, Lör, Sön" | split: ", " -%}
 {%- assign i = 0 -%}
 <div class="layout layout--col">
   <div class="grid grid--cols-{{ show }}">
@@ -25,8 +26,10 @@
             {%- assign pcat = type[value] -%}
           {%- endif -%}
         {%- endfor -%}
+        {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
+        {%- assign day = days[day_u] -%}
         <div class="flex flex--col flex--left">
-          <div class="label label--small label--inverted">{{ validtimetz | date: "%a %H:%S" }}</div>
+          <div class="label label--small label--inverted">{{ day }} {{ validtimetz | date: "%H:%S" }}</div>
           <div class="value value--xxsmall value--tnums">{{ temp }}°C</div>
           <div class="value value--xxsmall value--tnums">{{ precip }}mm</div>
           <div class="value value--xxsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
