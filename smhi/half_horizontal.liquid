@@ -1,41 +1,41 @@
-<div class="layout">
-  <div class="columns">
-    {% assign hours = "07, 13, 19" %}
-    {% assign type = "–, Snö, Snöbland, Regn, Dugg, Undk regn, Undk dugg" | split: ", " %}
-    {% assign show = 8 %}
-    {% assign i = 0 %}
-    {% for series in timeSeries %}
-      {% assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset %}
-      {% assign hour = validtimetz | date: "%H" %}
-      {% if hours contains hour %}
-        {% assign i = i | plus: 1 %}
-        {% for param in series.parameters %}
-          {% assign value = param.values[0] | plus: 0 %}
-          {% if param.name == "t" %}
-            {% assign temp = value | round %}
-          {% elsif param.name == "ws" %}
-            {% assign wind = value | round %}
-          {% elsif param.name == "gust" %}
-            {% assign gust = value | round %}
-          {% elsif param.name == "pmean" %}
-            {% assign precip = value %}
-          {% elsif param.name == "r" %}
-            {% assign humid = value %}
-          {% elsif param.name == "pcat" %}
-            {% assign pcat = type[value] %}
-          {% endif %}
-        {% endfor %}
-        <div class="column">
+{%- assign hours = "07, 13, 19" | split: ", " -%}
+{%- assign show = 8 -%}
+{%- assign type = ", Snö, Snöbland, Regn, Dugg, Undk regn, Undk dugg" | split: ", " -%}
+{%- assign i = 0 -%}
+<div class="layout layout--col">
+  <div class="grid grid--cols-{{ show }}">
+    {%- for series in timeSeries -%}
+      {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
+      {%- assign hour = validtimetz | date: "%H" -%}
+      {%- if hours contains hour -%}
+        {%- assign i = i | plus: 1 -%}
+        {%- for param in series.parameters -%}
+          {%- assign value = param.values[0] | plus: 0 -%}
+          {%- if param.name == "t" -%}
+            {%- assign temp = value | round -%}
+          {%- elsif param.name == "ws" -%}
+            {%- assign wind = value | round -%}
+          {%- elsif param.name == "gust" -%}
+            {%- assign gust = value | round -%}
+          {%- elsif param.name == "pmean" -%}
+            {%- assign precip = value -%}
+          {%- elsif param.name == "r" -%}
+            {%- assign humid = value -%}
+          {%- elsif param.name == "pcat" -%}
+            {%- assign pcat = type[value] -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <div class="flex flex--col flex--left">
           <div class="label label--small label--inverted">{{ validtimetz | date: "%a %H:%S" }}</div>
           <div class="value value--xxsmall value--tnums">{{ temp }}°C</div>
           <div class="value value--xxsmall value--tnums">{{ precip }}mm</div>
           <div class="value value--xxsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
           <div class="value value--xxsmall value--tnums">{{ humid }}%</div>
-          <div class="value value--xxsmall value--tnums">{{ pcat }}</div>
+          <div class="value value--xxsmall value--tnums">{{ pcat | default: "–" }}</div>
         </div>
-        {% if i == show %}{% break %}{% endif %}
-      {% endif %}
-    {% endfor %}
+        {%- if i == show %}{% break %}{% endif -%}
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </div>
 
