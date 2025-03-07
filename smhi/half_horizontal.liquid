@@ -1,14 +1,35 @@
 {%- assign hours = "07, 13, 19" | split: ", " -%}
 {%- assign show = 8 -%}
 {%- assign type = ", Snö, Snöbland, Regn, Dugg, Undk regn, Undk dugg" | split: ", " -%}
+{%- assign symbol = ", Klar himmel, Nästan klar himmel, Varierande molnighet, Halvklart, Molnig himmel, Mulet, Dimma, Lätta regnskurar, Måttliga regnskurar, Kraftiga regnskurar, Åskväder, Lätta snöslaskskurar, Måttliga snöslaskskurar, Kraftiga snöslaskskurar, Lätta snöbyar, Måttliga snöbyar, Kraftiga snöbyar, Lätt regn, Måttligt regn, Kraftigt regn, Åska, Lätt snöslask, Måttlig snöslask, Kraftig snöslask, Lätt snöfall, Måttligt snöfall, Kraftigt snöfall" | split: ", " -%}
+{%- assign days_l = ", Måndag, Tisdag, Onsdag, Torsdag, Fredag, Lördag, Söndag" | split: ", " -%}
 {%- assign days = ", Mån, Tis, Ons, Tors, Fre, Lör, Sön" | split: ", " -%}
 {%- assign i = 0 -%}
+
+{%- for series in timeSeries -%}
+  {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
+  {%- assign hour = validtimetz | date: "%H" -%}
+    {%- for param in series.parameters -%}
+      {%- if param.name == "Wsymb2" -%}
+        {%- assign value = param.values[0] | plus: 0 -%}
+        {%- assign wsymb = symbol[value] -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- break -%}
+{%- endfor -%}
+{%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
+{%- assign day = days_l[day_u] -%}
+<div class="title_bar">
+  <span class="title">{{ day }} {{ validtimetz | date: "%Y-%m-%d %H:%S" }}</span>
+  <span class="instance">{{ wsymb }}</span>
+</div>
+
 <div class="layout layout--col">
   <div class="grid grid--cols-{{ show }}">
     {%- for series in timeSeries -%}
       {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
       {%- assign hour = validtimetz | date: "%H" -%}
-      {%- if hours contains hour -%}
+      {%- if hours contains hour or forloop.first -%}
         {%- assign i = i | plus: 1 -%}
         {%- for param in series.parameters -%}
           {%- assign value = param.values[0] | plus: 0 -%}

@@ -27,7 +27,7 @@
         {%- assign wsymb = symbol[value] -%}
       {%- endif -%}
     {%- endfor -%}
-    {% break %}
+    {%- break -%}
 {%- endfor -%}
 {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
 {%- assign day = days_l[day_u] -%}
