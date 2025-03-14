@@ -1,0 +1,95 @@
+{%- assign area_l = ", Norra Sverige, Norra Mellansverige, Södra Mellansverige, Södra Sverige" | split: ", " -%}
+{%- assign area_i = trmnl.plugin_settings.custom_fields_values.area.last | plus: 0 -%}
+{%- assign area =  area_l[area_i] -%}
+{%- assign days_l = ", Måndag, Tisdag, Onsdag, Torsdag, Fredag, Lördag, Söndag" | split: ", " -%}
+{%- assign day_u = data.first.time_start | date: "%u" | plus: 0 -%}
+{%- assign day = days_l[day_u] -%}
+
+<!-- import Highcharts + Chartkick libraries -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartkick@5.0.1/dist/chartkick.min.js"></script>
+
+<div class="title_bar">
+  <span class="title">Elprisetjustnu.se</span>
+  <span class="instance"></span>
+</div>
+
+<div class="layout">
+  <div id="elpris" style="width: 100%"></div>
+</div>
+
+<div class="title_bar">
+  <span class="title">{{ day }} {{ data.first.time_start | date: "%Y-%m-%d" }}</span>
+  <span class="instance">{{ area }}</span>
+</div>
+
+<script>
+  const data_json = {{ data | json }};
+
+  const data = data_json.reduce(function(output,hour) {
+    output[hour.time_start] = hour.SEK_per_kWh;
+    return output;
+  },{});
+
+  // recommended configs to achieve the TRMNL Framework aesthetic
+  const createChart = function() {
+    new Chartkick["LineChart"](
+    "elpris",
+    data,
+    {
+      adapter: "highcharts", // chartjs, google, etc available
+      prefix: "",
+      suffix: " kr",
+      thousands: ",",
+      points: true,
+      colors: ["black"],
+      curve: false,
+      library: {
+        chart: {
+          height: 380
+        },
+        plotOptions: {
+          series: {
+            animation: false,
+            lineWidth: 4
+          }
+        },
+        yAxis: {
+          labels: {
+            style: {
+              fontSize: "16px",
+              color:"#000000"
+            }
+          },
+          gridLineDashStyle: "shortdot",
+          gridLineWidth: 1,
+          gridLineColor: "#000000",
+          tickAmount: 5
+        },
+        xAxis: {
+          type: "daytime",
+          labels: {
+            style: {
+              fontSize: "16px",
+              color: "#000000"
+            }
+          },
+          lineWidth: 0,
+          gridLineDashStyle: "dot",
+          tickWidth: 1,
+          tickLength: 0,
+          gridLineWidth: 1,
+          gridLineColor: "#000000",
+          tickPixelInterval: 60
+        }
+      }
+    });
+  };
+
+  // ensure your chart loads before plugin render is generated
+  if ("Chartkick" in window) {
+    createChart();
+  } else {
+    window.addEventListener("chartkick:load", createChart, true);
+  }
+</script>

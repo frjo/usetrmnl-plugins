@@ -1,0 +1,20 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: 'https://www.elprisetjustnu.se/api/v1/prices/{{ "now" | date: "%Y" }}/{{ "now" | date: "%m" }}-{{ "now" | date: "%d" }}_{{ area }}.json'
+polling_headers: ''
+custom_fields:
+- keyname: area
+  field_type: select
+  options:
+  - Norra Sverige (SE1): SE1
+  - Norra Mellansverige (SE2): SE2
+  - Södra Mellansverige (SE3): SE3
+  - Södra Sverige (SE4): SE4
+  default: SE3
+  name: Elområde
+name: Elprisetjustnu
+refresh_interval: 360
