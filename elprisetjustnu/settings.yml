@@ -17,4 +17,4 @@ custom_fields:
   default: SE3
   name: Elområde
 name: Elprisetjustnu
-refresh_interval: 360
+refresh_interval: 60
