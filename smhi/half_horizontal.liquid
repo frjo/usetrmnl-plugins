@@ -6,24 +6,6 @@
 {%- assign days = ", Mån, Tis, Ons, Tors, Fre, Lör, Sön" | split: ", " -%}
 {%- assign i = 0 -%}
 
-{%- for series in timeSeries -%}
-  {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
-  {%- assign hour = validtimetz | date: "%H" -%}
-    {%- for param in series.parameters -%}
-      {%- if param.name == "Wsymb2" -%}
-        {%- assign value = param.values[0] | plus: 0 -%}
-        {%- assign wsymb = symbol[value] -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- break -%}
-{%- endfor -%}
-{%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
-{%- assign day = days_l[day_u] -%}
-<div class="title_bar">
-  <span class="title">{{ day }} {{ validtimetz | date: "%Y-%m-%d %H:%S" }}</span>
-  <span class="instance">{{ wsymb }}</span>
-</div>
-
 <div class="layout layout--col">
   <div class="grid grid--cols-{{ show }}">
     {%- for series in timeSeries -%}
@@ -63,7 +45,20 @@
   </div>
 </div>
 
+{%- for series in timeSeries -%}
+  {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
+  {%- assign hour = validtimetz | date: "%H" -%}
+    {%- for param in series.parameters -%}
+      {%- if param.name == "Wsymb2" -%}
+        {%- assign value = param.values[0] | plus: 0 -%}
+        {%- assign wsymb = symbol[value] -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- break -%}
+{%- endfor -%}
+{%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
+{%- assign day = days_l[day_u] -%}
 <div class="title_bar">
-  <span class="title">SMHI väder</span>
-  <span class="instance">{{ trmnl.plugin_settings.custom_fields_values.city }}</span>
+  <span class="title">SMHI {{ day }} {{ validtimetz | date: "%Y-%m-%d %H:%S" }}</span>
+  <span class="instance">{{ trmnl.plugin_settings.custom_fields_values.city }} {{ wsymb }}</span>
 </div>
