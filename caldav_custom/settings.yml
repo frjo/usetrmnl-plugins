@@ -1,0 +1,11 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: https://usetrmnl.com/api/plugin_settings/<your_plugin_id>/data
+polling_headers: authorization=bearer <yout_api_key>
+id: 50297
+name: CalDAV custom
+refresh_interval: 60

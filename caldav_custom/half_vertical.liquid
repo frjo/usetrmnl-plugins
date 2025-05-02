@@ -1,0 +1,32 @@
+{%- assign months_l = ", Januari, Februari, Mars, April, Maj, Juni, Juli, Augusti, September, Oktober, November, December" | split: ", " -%}
+{%- assign days_l = ", Måndag, Tisdag, Onsdag, Torsdag, Fredag, Lördag, Söndag" | split: ", " -%}
+{%- assign i = 0 -%}
+{%- assign show = 8 -%}
+
+
+<div class="layout">
+  <div class="" style="display: flex; flex-flow: column wrap; height: 100%; gap: var(--gap);">
+    {%- for days in data.events -%}
+      {%- assign month = days[1][0].date_time | date: "%m"| abs -%}
+      {%- assign day_e = days[1][0].date_time | date: "%e" -%}
+      {%- assign day_u = days[1][0].date_time | date: "%u" | plus: 0 -%}
+      <div>
+        <div class="label border--h-4" style="margin-block-end: 7px;">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
+        {%- for events in days[1] -%}
+          {%- assign i = i | plus: 1 -%}
+          <div style="margin-block-start: 4px;">
+            <div class="title title--small">{{ events.summary }}</div>
+            <div class="description clamp--3">{{ events.description }}</div>
+          </div>
+          {%- if i == show %}{% break %}{% endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if i == show %}{% break %}{% endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<div class="title_bar">
+  <span class="title">{{ trmnl.plugin_settings.instance_name }}</span>
+  <span class="instance">Kalender</span>
+</div>
