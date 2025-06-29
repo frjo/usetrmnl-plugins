@@ -1,27 +1,36 @@
+{%- assign event_keys = "" -%}
+{%- assign today_s = "today" | date: "%Y-%m-%dT00:00:00.000+02:00" | date: "%s" | plus: 0 -%}
 {%- assign months_l = ", Januari, Februari, Mars, April, Maj, Juni, Juli, Augusti, September, Oktober, November, December" | split: ", " -%}
 {%- assign days_l = ", Måndag, Tisdag, Onsdag, Torsdag, Fredag, Lördag, Söndag" | split: ", " -%}
 {%- assign i = 0 -%}
-{%- assign show = 16 -%}
+{%- assign day_prev = 0 -%}
+{%- assign show = 20 -%}
 
+{%- assign sorted_days = data.events | sort: "date_time" -%}
 
-<div class="layout">
+<div class="layout layout--left">
   <div class="" style="display: flex; flex-flow: column wrap; height: 100%; gap: var(--gap);">
-    {%- for days in data.events -%}
-      {%- assign month = days[1][0].date_time | date: "%m"| abs -%}
-      {%- assign day_e = days[1][0].date_time | date: "%e" -%}
-      {%- assign day_u = days[1][0].date_time | date: "%u" | plus: 0 -%}
-      <div style="width: calc(50% - var(--gap) / 2);">
-        <div class="label border--h-4" style="margin-block-end: 7px;">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
-        {%- for events in days[1] -%}
-          {%- assign i = i | plus: 1 -%}
-          <div style="margin-block-start: 4px;">
-            <div class="title title--small">{{ events.summary }}</div>
-            <div class="description clamp--3">{{ events.description }}</div>
-          </div>
-          {%- if i == show %}{% break %}{% endif -%}
-        {%- endfor -%}
+    {%- for event in sorted_days -%}
+      <div style="width: calc(800px/3 - var(--gap)*2);">
+        {%- assign day_s = event.date_time | date: "%s" | plus: 0 -%}
+        {%- if today_s > day_s %}{% continue %}{% endif -%}
+        {%- assign i = i | plus: 1 -%}
+        {%- if day_s != day_prev -%}
+          {%- assign month = event.date_time | date: "%m"| abs -%}
+          {%- assign day_e = event.date_time | date: "%e" -%}
+          {%- assign day_u = event.date_time | date: "%u" | plus: 0 -%}
+          <div class="label label--underline" style="margin-block-end: 7px;">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
+        {%- endif -%}
+        {%- assign day_prev = day_s -%}
+        <div style="margin-block-start: 4px;">
+          <div class="label clamp--3" style="font-size: 13px;" data-pixel-perfect="true">{{ event.summary }}</div>
+          {%- if event.description contains "Lunch 1" -%}
+          {%- else -%}
+            <div class="description clamp--3">{{ event.description }}</div>
+          {%- endif -%}
+        </div>
+        {%- if i == show %}{% break %}{% endif -%}
       </div>
-      {%- if i == show %}{% break %}{% endif -%}
     {%- endfor -%}
   </div>
 </div>
