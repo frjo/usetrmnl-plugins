@@ -11,26 +11,26 @@
 <div class="layout layout--left">
   <div class="" style="display: flex; flex-flow: column wrap; height: 100%; gap: var(--gap);">
     {%- for event in sorted_days -%}
-      <div>
-        {%- assign day_s = event.date_time | date: "%s" | plus: 0 -%}
-        {%- if today_s > day_s %}{% continue %}{% endif -%}
-        {%- assign i = i | plus: 1 -%}
-        {%- if day_s != day_prev -%}
-          {%- assign month = event.date_time | date: "%m"| abs -%}
-          {%- assign day_e = event.date_time | date: "%e" -%}
-          {%- assign day_u = event.date_time | date: "%u" | plus: 0 -%}
-          <div class="label label--underline" style="margin-block-end: 7px;">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
+    <div style="width: calc(400px/2 - var(--gap)*2);">
+      {%- assign day_s = event.date_time | date: "%s" | plus: 0 -%}
+      {%- if today_s > day_s %}{% continue %}{% endif -%}
+      {%- assign i = i | plus: 1 -%}
+      {%- if day_s != day_prev -%}
+      {%- assign month = event.date_time | date: "%m"| abs -%}
+      {%- assign day_e = event.date_time | date: "%e" -%}
+      {%- assign day_u = event.date_time | date: "%u" | plus: 0 -%}
+      <div class="label label--underline" style="margin-block-end: 7px;">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
+      {%- endif -%}
+      {%- assign day_prev = day_s -%}
+      <div style="margin-block-start: 4px;">
+        <div class="label clamp--3" style="font-size: 13px;" data-pixel-perfect="true">{{ event.summary }}</div>
+        {%- if event.description contains "Lunch 1" -%}
+        {%- else -%}
+        <div class="description clamp--2">{{ event.description }}</div>
         {%- endif -%}
-        {%- assign day_prev = day_s -%}
-        <div style="margin-block-start: 4px;">
-          <div class="label clamp--3" style="font-size: 13px;" data-pixel-perfect="true">{{ event.summary }}</div>
-          {%- if event.description contains "Lunch 1" -%}
-          {%- else -%}
-            <div class="description clamp--2">{{ event.description }}</div>
-          {%- endif -%}
-        </div>
-        {%- if i == show %}{% break %}{% endif -%}
       </div>
+    </div>
+    {%- if i == show %}{% break %}{% endif -%}
     {%- endfor -%}
   </div>
 </div>
