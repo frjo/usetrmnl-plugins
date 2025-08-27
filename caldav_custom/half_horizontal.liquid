@@ -11,9 +11,9 @@
 <div class="layout layout--left">
   <div class="" style="display: flex; flex-flow: column wrap; height: 100%; gap: var(--gap);">
     {%- for event in sorted_days -%}
+    {%- assign day_s = event.date_time | date: "%s" | plus: 0 -%}
+    {%- if today_s > day_s %}{% continue %}{% endif -%}
     <div style="width: calc(800px/3 - var(--gap)*2);">
-      {%- assign day_s = event.date_time | date: "%s" | plus: 0 -%}
-      {%- if today_s > day_s %}{% continue %}{% endif -%}
       {%- assign i = i | plus: 1 -%}
       {%- if day_s != day_prev -%}
       {%- assign month = event.date_time | date: "%m"| abs -%}
