@@ -19,10 +19,10 @@
       {%- assign month = event.date_time | date: "%m"| abs -%}
       {%- assign day_e = event.date_time | date: "%e" -%}
       {%- assign day_u = event.date_time | date: "%u" | plus: 0 -%}
-      <div class="label label--underline" style="margin-block-end: 7px;">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
+      <div class="label label--underline mb--1">{{ days_l[day_u] }}, {{ day_e }} {{ months_l[month] }}</div>
       {%- endif -%}
       {%- assign day_prev = day_s -%}
-      <div style="margin-block-start: 4px;">
+      <div>
         <div class="label clamp--3" style="font-size: 13px;" data-pixel-perfect="true">{{ event.summary }}</div>
         {%- if event.description contains "Lunch 1" -%}
         {%- else -%}
