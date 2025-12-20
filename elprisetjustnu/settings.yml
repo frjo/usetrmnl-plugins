@@ -6,6 +6,8 @@ static_data: ''
 polling_verb: get
 polling_url: 'https://www.elprisetjustnu.se/api/v1/prices/{{ "now" | date: "%Y" }}/{{ "now" | date: "%m" }}-{{ "now" | date: "%d" }}_{{ area }}.json'
 polling_headers: ''
+polling_body: ''
+id: 28620
 custom_fields:
 - keyname: area
   field_type: select
@@ -16,5 +18,12 @@ custom_fields:
   - Södra Sverige (SE4): SE4
   default: SE3
   name: Elområde
+- keyname: about_elpris
+  field_type: author_bio
+  name: About elprisetjustnu.se plugin
+  category: environment
+  description: Swedish spot prices per kWh. Using the API from Elprisetjustnu. Set your area to get the local price.
+  github_url: https://github.com/frjo/usetrmnl-plugins
+  learn_more_url: https://www.elprisetjustnu.se/
 name: Elprisetjustnu
-refresh_interval: 60
+refresh_interval: 120
