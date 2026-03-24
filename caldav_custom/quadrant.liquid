@@ -23,7 +23,7 @@
       {%- endif -%}
       {%- assign day_prev = day_s -%}
       <div>
-        <div class="label clamp--3" style="font-size: 13px;" data-pixel-perfect="true">{{ event.summary }}</div>
+        <div class="label clamp--3" style="font-size: 13px;">{{ event.summary }}</div>
         {%- if event.description contains "Lunch 1" -%}
         {%- else -%}
         <div class="description clamp--2">{{ event.description }}</div>
