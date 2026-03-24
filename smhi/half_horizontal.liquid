@@ -32,12 +32,12 @@
         {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
         {%- assign day = days[day_u] -%}
         <div class="flex flex--col flex--left">
-          <div class="label label--small label--inverted">{{ day }} {{ validtimetz | date: "%H:%S" }}</div>
-          <div class="value value--xxsmall value--tnums">{{ temp }}°C</div>
-          <div class="value value--xxsmall value--tnums">{{ precip }}mm</div>
-          <div class="value value--xxsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
-          <div class="value value--xxsmall value--tnums">{{ humid }}%</div>
-          <div class="value value--xxsmall value--tnums">{{ pcat | default: "–" }}</div>
+          <div class="label label--small lg:label--base label--inverted">{{ day }} {{ validtimetz | date: "%H:%S" }}</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ temp }}°C</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ precip }}mm</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ humid }}%</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pcat | default: "–" }}</div>
         </div>
         {%- if i == show %}{% break %}{% endif -%}
       {%- endif -%}

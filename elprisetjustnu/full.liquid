@@ -28,6 +28,9 @@
   },{});
 
   // recommended configs to achieve the TRMNL Framework aesthetic
+  const layoutEl = document.getElementById('elpris').closest('.layout');
+  const chartHeight = layoutEl ? Math.max(layoutEl.offsetHeight - 10, 300) : 380;
+
   const createChart = function() {
     new Chartkick["LineChart"](
     "elpris",
@@ -42,7 +45,7 @@
       curve: false,
       library: {
         chart: {
-          height: 380
+          height: chartHeight
         },
         plotOptions: {
           series: {
