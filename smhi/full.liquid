@@ -7,24 +7,24 @@
 {%- assign i = 0 -%}
 
 {%- for series in timeSeries -%}
-  {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
+  {%- assign validtimetz = series.time | date: "%s" | plus: trmnl.user.utc_offset -%}
   {%- assign hour = validtimetz | date: "%H" -%}
-    {%- for param in series.parameters -%}
+    {%- for param in series.data -%}
       {%- assign value = param.values[0] | plus: 0 -%}
-      {%- if param.name == "t" -%}
+      {%- if param.name == "air_temperature" -%}
         {%- assign temp = value | round -%}
-      {%- elsif param.name == "ws" -%}
+      {%- elsif param.name == "wind_speed" -%}
         {%- assign wind = value | round -%}
-      {%- elsif param.name == "gust" -%}
+      {%- elsif param.name == "wind_speed_of_gust" -%}
         {%- assign gust = value | round -%}
-      {%- elsif param.name == "pmean" -%}
+      {%- elsif param.name == "precipitation_amount_mean" -%}
         {%- assign precip = value -%}
-      {%- elsif param.name == "r" -%}
+      {%- elsif param.name == "relative_humidity" -%}
         {%- assign humid = value -%}
-      {%- elsif param.name == "pcat" -%}
+      {%- elsif param.name == "predominant_precipitation_type_at_surface" -%}
         {%- assign pcat = type[value] -%}
-      {%- elsif param.name == "Wsymb2" -%}
-        {%- assign wsymb = symbol[value] -%}
+      {%- elsif param.name == "symbol_code" -%}
+        {%- assign symbol = symbol[value] -%}
       {%- endif -%}
     {%- endfor -%}
     {%- break -%}
@@ -33,7 +33,7 @@
 {%- assign day = days_l[day_u] -%}
 <div class="title_bar">
   <span class="title">{{ day }} {{ validtimetz | date: "%Y-%m-%d %H:%S" }}</span>
-  <span class="instance">{{ wsymb }}</span>
+  <span class="instance">{{ symbol }}</span>
 </div>
 
 <div class="layout layout--col">

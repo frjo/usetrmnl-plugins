@@ -4,7 +4,8 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/{{longitude}}/lat/{{latitude}}/data.json
+polling_url: https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/{{
+  longitude }}/lat/{{ latitude }}/data.json
 polling_headers: ''
 custom_fields:
 - keyname: city
@@ -19,5 +20,5 @@ custom_fields:
   field_type: string
   placeholder: '59.4'
   name: Latitude
-name: SMHI
+name: SMHI2
 refresh_interval: 60
