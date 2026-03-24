@@ -13,7 +13,7 @@
     {%- for event in sorted_days -%}
     {%- assign day_s = event.date_time | date: "%Y-%m-%d" | date: "%s" | plus: 0 -%}
     {%- if today_s > day_s %}{% continue %}{% endif -%}
-    <div style="width: calc(100cqw/3 - var(--gap)*2);">
+    <div style="width: calc(100vw/3 - var(--gap)*2);">
       {%- assign i = i | plus: 1 -%}
       {%- if day_s != day_prev -%}
       {%- assign month = event.date_time | date: "%m"| abs -%}
