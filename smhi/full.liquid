@@ -8,32 +8,20 @@
 
 {%- for series in timeSeries -%}
   {%- assign validtimetz = series.time | date: "%s" | plus: trmnl.user.utc_offset -%}
-  {%- assign hour = validtimetz | date: "%H" -%}
-    {%- for param in series.data -%}
-      {%- assign value = param.values[0] | plus: 0 -%}
-      {%- if param.name == "air_temperature" -%}
-        {%- assign temp = value | round -%}
-      {%- elsif param.name == "wind_speed" -%}
-        {%- assign wind = value | round -%}
-      {%- elsif param.name == "wind_speed_of_gust" -%}
-        {%- assign gust = value | round -%}
-      {%- elsif param.name == "precipitation_amount_mean" -%}
-        {%- assign precip = value -%}
-      {%- elsif param.name == "relative_humidity" -%}
-        {%- assign humid = value -%}
-      {%- elsif param.name == "predominant_precipitation_type_at_surface" -%}
-        {%- assign pcat = type[value] -%}
-      {%- elsif param.name == "symbol_code" -%}
-        {%- assign symbol = symbol[value] -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- break -%}
+  {%- assign temp = series.data.air_temperature | round -%}
+  {%- assign wind = series.data.wind_speed | round -%}
+  {%- assign gust = series.data.wind_speed_of_gust | round -%}
+  {%- assign precip = series.data.precipitation_amount_mean -%}
+  {%- assign humid = series.data.relative_humidity -%}
+  {%- assign pcat = type[series.data.predominant_precipitation_type_at_surface] -%}
+  {%- assign wsymb = symbol[series.data.symbol_code] -%}
+  {%- break -%}
 {%- endfor -%}
 {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
 {%- assign day = days_l[day_u] -%}
 <div class="title_bar">
-  <span class="title">{{ day }} {{ validtimetz | date: "%Y-%m-%d %H:%S" }}</span>
-  <span class="instance">{{ symbol }}</span>
+  <span class="title">{{ day }} {{ validtimetz | date: "%Y-%m-%d %H:%M" }}</span>
+  <span class="instance">{{ wsymb }}</span>
 </div>
 
 <div class="layout layout--col">
@@ -62,30 +50,20 @@
 
   <div class="grid grid--cols-{{ show }}">
     {%- for series in timeSeries -%}
-      {%- assign validtimetz = series.validTime | date: "%s" | plus: trmnl.user.utc_offset -%}
+      {%- assign validtimetz = series.time | date: "%s" | plus: trmnl.user.utc_offset -%}
       {%- assign hour = validtimetz | date: "%H" -%}
       {%- if hours contains hour -%}
         {%- assign i = i | plus: 1 -%}
-        {%- for param in series.parameters -%}
-          {%- assign value = param.values[0] | plus: 0 -%}
-          {%- if param.name == "t" -%}
-            {%- assign temp = value | round -%}
-          {%- elsif param.name == "ws" -%}
-            {%- assign wind = value | round -%}
-          {%- elsif param.name == "gust" -%}
-            {%- assign gust = value | round -%}
-          {%- elsif param.name == "pmean" -%}
-            {%- assign precip = value -%}
-          {%- elsif param.name == "r" -%}
-            {%- assign humid = value -%}
-          {%- elsif param.name == "pcat" -%}
-            {%- assign pcat = type[value] -%}
-          {%- endif -%}
-        {%- endfor -%}
+        {%- assign temp = series.data.air_temperature | round -%}
+        {%- assign wind = series.data.wind_speed | round -%}
+        {%- assign gust = series.data.wind_speed_of_gust | round -%}
+        {%- assign precip = series.data.precipitation_amount_mean -%}
+        {%- assign humid = series.data.relative_humidity -%}
+        {%- assign pcat = type[series.data.predominant_precipitation_type_at_surface] -%}
         {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
         {%- assign day = days[day_u] -%}
         <div class="flex flex--col flex--left">
-          <div class="label label--small lg:label--base label--inverted">{{ day }} {{ validtimetz | date: "%H:%S" }}</div>
+          <div class="label label--small lg:label--base label--inverted">{{ day }} {{ validtimetz | date: "%H:%M" }}</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ temp }}°C</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ precip }}mm</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
