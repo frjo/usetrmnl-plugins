@@ -11,7 +11,7 @@
   {%- assign temp = series.data.air_temperature | round -%}
   {%- assign wind = series.data.wind_speed | round -%}
   {%- assign gust = series.data.wind_speed_of_gust | round -%}
-  {%- assign precip = series.data.precipitation_amount_mean -%}
+  {%- assign precip = series.data.precipitation_amount_mean | replace: ".", "," -%}
   {%- assign humid = series.data.relative_humidity -%}
   {%- assign pcat = type[series.data.predominant_precipitation_type_at_surface] -%}
   {%- assign wsymb = symbol[series.data.symbol_code] -%}
@@ -42,7 +42,7 @@
     <div class="item">
       <div class="meta"></div>
       <div class="content flex flex--center-x">
-        <span class="value value--xlarge lg:value--xxlarge value--tnums">{{ wind }}–{{ gust }}</span>
+        <span class="value value--xlarge lg:value--xxlarge value--tnums">{{ wind }}<span class="value--large lg:value--xlarge text--size-4 text--gray-40">({{ gust }})</span></span>
         <span class="label label--large lg:label--xlarge">Vind m/s</span>
       </div>
     </div>
@@ -57,7 +57,7 @@
         {%- assign temp = series.data.air_temperature | round -%}
         {%- assign wind = series.data.wind_speed | round -%}
         {%- assign gust = series.data.wind_speed_of_gust | round -%}
-        {%- assign precip = series.data.precipitation_amount_mean -%}
+        {%- assign precip = series.data.precipitation_amount_mean | replace: ".", "," -%}
         {%- assign humid = series.data.relative_humidity -%}
         {%- assign pcat = type[series.data.predominant_precipitation_type_at_surface] -%}
         {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
@@ -66,9 +66,9 @@
           <div class="label label--small lg:label--base label--inverted">{{ day }} {{ validtimetz | date: "%H:%M" }}</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ temp }}°C</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ precip }}mm</div>
-          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }}–{{ gust }}m/s</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }}<span class="text--gray-40">({{ gust }})</span> m/s</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ humid }}%</div>
-          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pcat | default: "–" }}</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pcat | default: "…" }}</div>
         </div>
         {%- if i == show %}{% break %}{% endif -%}
       {%- endif -%}
