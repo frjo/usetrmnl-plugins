@@ -1,6 +1,6 @@
-{%- assign hours = "07, 13, 19" | split: ", " -%}
+{%- assign hours = "08, 11, 15" | split: ", " -%}
 {%- assign show = 6 -%}
-{%- assign type = ", Snö, Snöbland, Regn, Dugg, Undk regn, Undk dugg" | split: ", " -%}
+{%- assign type = ", Regn, Åskväder, Undk regn, Isblandat, Snö, Blötsnö, Snöbland, Småhagel, Mjukhagel, Hagel, Dugg, Undk dugg " | split: ", " -%}
 {%- assign symbol = ", Klar himmel, Nästan klar himmel, Varierande molnighet, Halvklart, Molnig himmel, Mulet, Dimma, Lätta regnskurar, Måttliga regnskurar, Kraftiga regnskurar, Åskväder, Lätta snöslaskskurar, Måttliga snöslaskskurar, Kraftiga snöslaskskurar, Lätta snöbyar, Måttliga snöbyar, Kraftiga snöbyar, Lätt regn, Måttligt regn, Kraftigt regn, Åska, Lätt snöslask, Måttlig snöslask, Kraftig snöslask, Lätt snöfall, Måttligt snöfall, Kraftigt snöfall" | split: ", " -%}
 {%- assign days_l = ", Måndag, Tisdag, Onsdag, Torsdag, Fredag, Lördag, Söndag" | split: ", " -%}
 {%- assign days = ", Mån, Tis, Ons, Tors, Fre, Lör, Sön" | split: ", " -%}
@@ -17,7 +17,7 @@
         {%- assign wind = series.data.wind_speed | round -%}
         {%- assign gust = series.data.wind_speed_of_gust | round -%}
         {%- assign precip = series.data.precipitation_amount_mean | replace: ".", "," -%}
-        {%- assign humid = series.data.relative_humidity -%}
+        {%- assign pprob = series.data.probability_of_precipitation | replace: ".", "," -%}
         {%- assign pcat = type[series.data.predominant_precipitation_type_at_surface] -%}
         {%- assign wsymb = symbol[series.data.symbol_code] -%}
         {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
@@ -32,7 +32,7 @@
               </div>
               <div class="item">
                 <div class="content flex flex--col flex--left">
-                  <span class="value value--small lg:value--large value--tnums">{{ temp }}°</span>
+                  <span class="value lg:value--large value--tnums">{{ temp }}°</span>
                   <span class="label label--small lg:label--large">Temp °C</span>
                 </div>
               </div>
@@ -40,7 +40,7 @@
                 <div class="content flex flex--col flex--left">
                   <span class="value value--xsmall lg:value--medium value--tnums">{{ precip }}</span>
                   <span class="label label--small lg:label--large">{{ pcat | default: "Nederbörd"}} mm</span>
-                  <span class="value value--xsmall lg:value--medium value--tnums">{{ wind }}–{{ gust }}</span>
+                  <span class="value value--xsmall lg:value--medium value--tnums">{{ wind }} <span class="text--gray-40">({{ gust }})</span></span>
                   <span class="label label--small lg:label--large">Vind m/s</span>
                 </div>
                 <div class="meta"></div>
@@ -49,11 +49,11 @@
           </div>
         {%- else -%}
           <div class="flex flex--col flex--left">
-            <div class="label label--small lg:label--base label--inverted">{{ day }} {{ validtimetz | date: "%H:%M" }}</div>
+            <div class="label label--small lg:label--base label--primary">{{ day }} {{ validtimetz | date: "%H:%M" }}</div>
             <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ temp }}°C</div>
+            <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }} <span class="text--gray-40">({{ gust }})</span> m/s</div>
             <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ precip }}mm</div>
-            <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }}({{ gust }}) m/s</div>
-            <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ humid }}%</div>
+            <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pprob }}%</div>
             <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pcat | default: "…" }}</div>
           </div>
         {%- endif -%}
