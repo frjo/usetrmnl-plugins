@@ -12,7 +12,7 @@
   {%- assign wind = series.data.wind_speed | round -%}
   {%- assign gust = series.data.wind_speed_of_gust | round -%}
   {%- assign precip = series.data.precipitation_amount_mean -%}
-  {%- assign pprob = series.data.probability_of_precipitation | replace: ".", "," -%}
+  {%- assign pprop = series.data.probability_of_precipitation | replace: ".", "," -%}
   {%- assign pcat = type[series.data.predominant_precipitation_type_at_surface] -%}
   {%- assign wsymb = symbol[series.data.symbol_code] -%}
   {%- break -%}
@@ -41,15 +41,15 @@
     </div>
     <div class="item">
       <div class="content flex flex--center-x">
-        <span class="value value--tnums lg:value--large">{{ wind }}–{{ gust }}</span>
+        <span class="value value--tnums lg:value--large">{{ wind }} <span class="value--small lg:value--base text--gray-40">({{ gust }})</span></span>
         <span class="label lg:label--large">Vind m/s</span>
       </div>
     </div>
     <div class="item">
       <div class="meta"></div>
       <div class="content flex flex--center-x">
-        <span class="value value--tnums lg:value--large">{{ humid }}</span>
-        <span class="label lg:label--large">Luftfuktighet %</span>
+        <span class="value value--tnums lg:value--large">{{ pprop }}</span>
+        <span class="label lg:label--large">Sannolikhet %</span>
       </div>
     </div>
   </div>
@@ -69,11 +69,11 @@
         {%- assign day_u = validtimetz | date: "%u" | plus: 0 -%}
         {%- assign day = days[day_u] -%}
         <div class="flex flex--col flex--left">
-          <div class="label label--small lg:label--base label--primary">{{ day }} {{ validtimetz | date: "%H:%M" }}</div>
+          <div class="label label--small lg:label--base label--underline">{{ day }} {{ validtimetz | date: "%H:%M" }}</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ temp }}°C</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ wind }} <span class="text--gray-40">({{ gust }})</span> m/s</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ precip }}mm</div>
-          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pprob }}%</div>
+          <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pprop }}%</div>
           <div class="value value--xxsmall lg:value--xsmall value--tnums">{{ pcat | default: "…" }}</div>
         </div>
         {%- if i == show %}{% break %}{% endif -%}
